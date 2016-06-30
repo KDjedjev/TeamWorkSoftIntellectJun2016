@@ -55,16 +55,20 @@ public class Main {
 		}
 		System.out.println();
 
+		int player = ((Integer[]) ArtificialIntelligence.STATE_VALUES
+				.toArray(new Integer[ArtificialIntelligence.STATE_VALUES
+										.size()]))[Util.PRNG
+								.nextInt(ArtificialIntelligence.STATE_VALUES
+										.size())];
+		System.out.println(player);
+		System.out.println();
+		
 		/*
 		 * Run the tests.
 		 */
 		int result = bot
 				.move(state,
-						((Integer[]) ArtificialIntelligence.STATE_VALUES
-								.toArray(new Integer[ArtificialIntelligence.STATE_VALUES
-										.size()]))[Util.PRNG
-								.nextInt(ArtificialIntelligence.STATE_VALUES
-										.size())]);
+						player);
 
 		/*
 		 * Print test result.

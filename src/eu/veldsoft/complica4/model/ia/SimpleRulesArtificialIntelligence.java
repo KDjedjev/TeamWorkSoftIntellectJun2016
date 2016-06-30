@@ -338,6 +338,12 @@ public class SimpleRulesArtificialIntelligence extends AbstractArtificialIntelli
 			return solutions.get(0);
 		}
 	}
+	
+	/**
+	 * Form combination two in a roll.
+	 * 
+	 * @return Index of a column to play or -1 if rule is not applicable.
+	 */
 	private int f1(){
 		List<Integer> solutions = new ArrayList<Integer>();
 		for (int i = 0; i < state.length; i++) {
@@ -354,7 +360,6 @@ public class SimpleRulesArtificialIntelligence extends AbstractArtificialIntelli
 			return solutions.get(0);
 		}
 	}
-
 
 	/**
 	 * Select random column. It does not matter which one.
@@ -395,7 +400,8 @@ public class SimpleRulesArtificialIntelligence extends AbstractArtificialIntelli
 		} else if ((result = addRnadom()) != -1) {
 			Util.log("Rule 5.");
 		}
-
+		result = f1();
+		
 		return result;
 	}
 }
