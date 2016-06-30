@@ -8,8 +8,7 @@ import java.util.List;
  * 
  * @author Todor Balabanov
  */
-public class SimpleRulesArtificialIntelligence extends
-		AbstractArtificialIntelligence {
+public class SimpleRulesArtificialIntelligence extends AbstractArtificialIntelligence {
 	/**
 	 * 
 	 */
@@ -88,8 +87,7 @@ public class SimpleRulesArtificialIntelligence extends
 					return true;
 				}
 
-				for (k = 0; k < WIN_LINE_LENGTH && (i + k) < state.length
-						&& (j + k) < state[i].length; k++) {
+				for (k = 0; k < WIN_LINE_LENGTH && (i + k) < state.length && (j + k) < state[i].length; k++) {
 					if (state[i + k][j + k] != player) {
 						break;
 					}
@@ -98,8 +96,7 @@ public class SimpleRulesArtificialIntelligence extends
 					return true;
 				}
 
-				for (k = 0; k < WIN_LINE_LENGTH && (i - k) >= 0
-						&& (j + k) < state[i].length; k++) {
+				for (k = 0; k < WIN_LINE_LENGTH && (i - k) >= 0 && (j + k) < state[i].length; k++) {
 					if (state[i - k][j + k] != player) {
 						break;
 					}
@@ -142,8 +139,7 @@ public class SimpleRulesArtificialIntelligence extends
 					return true;
 				}
 
-				for (k = 0; k < subLineLength && (i + k) < state.length
-						&& (j + k) < state[i].length; k++) {
+				for (k = 0; k < subLineLength && (i + k) < state.length && (j + k) < state[i].length; k++) {
 					if (state[i + k][j + k] != player) {
 						break;
 					}
@@ -152,8 +148,52 @@ public class SimpleRulesArtificialIntelligence extends
 					return true;
 				}
 
-				for (k = 0; k < subLineLength && (i - k) >= 0
-						&& (j + k) < state[i].length; k++) {
+				for (k = 0; k < subLineLength && (i - k) >= 0 && (j + k) < state[i].length; k++) {
+					if (state[i - k][j + k] != player) {
+						break;
+					}
+				}
+				if (k == subLineLength) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	private boolean hasTwo(int[][] nextState, int player) {
+		int subLineLength = WIN_LINE_LENGTH - 2;
+
+		for (int i = 0, k; i < state.length; i++) {
+			for (int j = 0; j < state[i].length; j++) {
+				for (k = 0; k < subLineLength && (i + k) < state.length; k++) {
+					if (state[i + k][j] != player) {
+						break;
+					}
+				}
+				if (k == subLineLength) {
+					return true;
+				}
+
+				for (k = 0; k < subLineLength && (j + k) < state[i].length; k++) {
+					if (state[i][j + k] != player) {
+						break;
+					}
+				}
+				if (k == subLineLength) {
+					return true;
+				}
+
+				for (k = 0; k < subLineLength && (i + k) < state.length && (j + k) < state[i].length; k++) {
+					if (state[i + k][j + k] != player) {
+						break;
+					}
+				}
+				if (k == subLineLength) {
+					return true;
+				}
+
+				for (k = 0; k < subLineLength && (i - k) >= 0 && (j + k) < state[i].length; k++) {
 					if (state[i - k][j + k] != player) {
 						break;
 					}
@@ -287,7 +327,8 @@ public class SimpleRulesArtificialIntelligence extends
 			}
 		}
 
-		// TODO It is better to block three in a row where it will be possible to
+		// TODO It is better to block three in a row where it will be possible
+		// to
 		// form four in a row.
 
 		if (solutions.size() == 0) {
@@ -297,6 +338,23 @@ public class SimpleRulesArtificialIntelligence extends
 			return solutions.get(0);
 		}
 	}
+	private int f1(){
+		List<Integer> solutions = new ArrayList<Integer>();
+		for (int i = 0; i < state.length; i++) {
+			int[][] nextState = copy(state);
+			tryMove(nextState, player, i);
+			if (hasTwo(nextState, player) == true) {
+				solutions.add(i);
+			}
+		}
+		if (solutions.size() == 0) {
+			return -1;
+		} else {
+			Collections.shuffle(solutions);
+			return solutions.get(0);
+		}
+	}
+
 
 	/**
 	 * Select random column. It does not matter which one.
@@ -332,6 +390,8 @@ public class SimpleRulesArtificialIntelligence extends
 			Util.log("Rule 3.");
 		} else if ((result = addOneForBlockOtherToFormThree()) != -1) {
 			Util.log("Rule 4.");
+		} else if ((result = f1()) != -1) {
+			Util.log("Rule 5.");
 		} else if ((result = addRnadom()) != -1) {
 			Util.log("Rule 5.");
 		}
